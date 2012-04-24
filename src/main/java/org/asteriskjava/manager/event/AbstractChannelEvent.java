@@ -49,7 +49,11 @@ public abstract class AbstractChannelEvent extends ManagerEvent
      */
     private String uniqueId;
 
-    protected AbstractChannelEvent(Object source)
+		private String connectedLineNum;
+		private String connectedLineName;
+
+
+		protected AbstractChannelEvent(Object source)
     {
         super(source);
     }
@@ -137,4 +141,14 @@ public abstract class AbstractChannelEvent extends ManagerEvent
     {
         this.callerIdName = callerIdName;
     }
+
+
+	public String getConnectedLineNum () { return connectedLineNum;}
+
+	public void setConnectedLineNum (String connectedLineNum) { this.connectedLineNum = connectedLineNum;}
+
+
+	public String getConnectedLineName () { return connectedLineName;}
+
+	public void setConnectedLineName (String connectedLineName) { this.connectedLineName = connectedLineName;}
 }

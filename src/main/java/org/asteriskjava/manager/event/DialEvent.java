@@ -67,7 +67,11 @@ public class DialEvent extends ManagerEvent
      */
     private String callerIdName;
 
-    /**
+	private String connectedLineNum;
+	private String connectedLineName;
+
+
+	/**
      * The unique id of the source channel.
      */
     private String uniqueId;
@@ -343,4 +347,15 @@ public class DialEvent extends ManagerEvent
     {
         this.dialStatus = dialStatus;
     }
+
+
+	public String getConnectedLineNum () { return connectedLineNum;}
+
+	public void setConnectedLineNum (String connectedLineNum) { this.connectedLineNum = connectedLineNum;}
+
+
+	public String getConnectedLineName () { return connectedLineName;}
+
+	public void setConnectedLineName (String connectedLineName) { this.connectedLineName = connectedLineName;}
+
 }

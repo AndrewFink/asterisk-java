@@ -42,6 +42,8 @@ public class AgentCalledEvent extends ManagerEvent
     private String destinationChannel;
     private String callerIdNum;
     private String callerIdName;
+		private String connectedLineNum;
+		private String connectedLineName;
     private String context;
     private String extension;
     private String priority;
@@ -281,4 +283,14 @@ public class AgentCalledEvent extends ManagerEvent
     {
         this.variables = variables;
     }
+
+	public String getConnectedLineNum () { return connectedLineNum;}
+
+	public void setConnectedLineNum (String connectedLineNum) { this.connectedLineNum = connectedLineNum;}
+
+
+	public String getConnectedLineName () { return connectedLineName;}
+
+	public void setConnectedLineName (String connectedLineName) { this.connectedLineName = connectedLineName;}
+
 }

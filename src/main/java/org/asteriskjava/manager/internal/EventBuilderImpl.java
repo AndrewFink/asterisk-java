@@ -32,15 +32,15 @@ import java.util.*;
 class EventBuilderImpl extends AbstractBuilder implements EventBuilder
 {
     private static final Set<String> ignoredAttributes = new HashSet<String>(Arrays.asList("event"));
-    private Map<String, Class<?>> registeredEventClasses;
+    private Map<String, Class<? extends ManagerEvent>> registeredEventClasses;
 
     EventBuilderImpl()
     {
-        this.registeredEventClasses = new HashMap<String, Class<?>>();
+        registeredEventClasses = new HashMap<String, Class<? extends ManagerEvent>>();
         registerBuiltinEventClasses();
     }
 
-    @SuppressWarnings({"deprecation"})
+    @SuppressWarnings("deprecation")
     private void registerBuiltinEventClasses()
     {
         // please add new event classes alphabetically
@@ -124,6 +124,7 @@ class EventBuilderImpl extends AbstractBuilder implements EventBuilder
         registerEventClass(PeerEntryEvent.class);
         registerEventClass(PeerlistCompleteEvent.class);
         registerEventClass(PeerStatusEvent.class);
+			  registerEventClass(PickupEvent.class);
         registerEventClass(PriEventEvent.class);
         registerEventClass(QueueCallerAbandonEvent.class);
         registerEventClass(QueueEntryEvent.class);
@@ -173,7 +174,7 @@ class EventBuilderImpl extends AbstractBuilder implements EventBuilder
 
     }
 
-    public final void registerEventClass(Class<? extends ManagerEvent> clazz) throws IllegalArgumentException
+    @Override public final void registerEventClass(Class<? extends ManagerEvent> clazz) throws IllegalArgumentException
     {
         String className;
         String eventType;
@@ -205,9 +206,9 @@ class EventBuilderImpl extends AbstractBuilder implements EventBuilder
      */
     public final void registerEventClass(String eventType, Class<? extends ManagerEvent> clazz) throws IllegalArgumentException
     {
-        Constructor<?> defaultConstructor;
+				Constructor<? extends ManagerEvent> defaultConstructor;
 
-        if (!ManagerEvent.class.isAssignableFrom(clazz))
+				if (!ManagerEvent.class.isAssignableFrom(clazz))
         {
             throw new IllegalArgumentException(clazz + " is not a ManagerEvent");
         }
@@ -236,14 +237,9 @@ class EventBuilderImpl extends AbstractBuilder implements EventBuilder
         logger.debug("Registered event type '" + eventType + "' (" + clazz + ")");
     }
 
-    public ManagerEvent buildEvent(Object source, Map<String, Object> attributes)
-    {
-        ManagerEvent event;
-        String eventType;
-        Class<?> eventClass;
-        Constructor<?> constructor;
+    @Override public ManagerEvent buildEvent(Object source, Map<String, Object> attributes) {
 
-        if (attributes.get("event") == null)
+			if (attributes.get("event") == null)
         {
             logger.error("No event type in properties");
             return null;
@@ -254,7 +250,7 @@ class EventBuilderImpl extends AbstractBuilder implements EventBuilder
             return null;
         }
 
-        eventType = ((String) attributes.get("event")).toLowerCase(Locale.US);
+				String eventType = attributes.get("event").toString().toLowerCase(Locale.US);
 
         // Change in Asterisk 1.4 where the name of the UserEvent is sent as property instead
         // of the event name (AJ-48)
@@ -277,7 +273,7 @@ class EventBuilderImpl extends AbstractBuilder implements EventBuilder
             eventType = eventType + userEventType;
         }
 
-        eventClass = registeredEventClasses.get(eventType);
+				Class<? extends ManagerEvent> eventClass = registeredEventClasses.get(eventType);
         if (eventClass == null)
         {
             logger.info("No event class registered for event type '" + eventType + "', attributes: " + attributes
@@ -285,6 +281,7 @@ class EventBuilderImpl extends AbstractBuilder implements EventBuilder
             return null;
         }
 
+				final Constructor<? extends ManagerEvent> constructor;
         try
         {
             constructor = eventClass.getConstructor(new Class[]{Object.class});
@@ -295,9 +292,10 @@ class EventBuilderImpl extends AbstractBuilder implements EventBuilder
             return null;
         }
 
+				final ManagerEvent event;
         try
         {
-            event = (ManagerEvent) constructor.newInstance(source);
+            event = constructor.newInstance(source);
         }
         catch (Exception ex)
         {

@@ -38,6 +38,8 @@ public class QueueEntryEvent extends ResponseEvent
     private String callerId;
     private String callerIdName;
     private String callerIdNum;
+		private String connectedLineNum;
+		private String connectedLineName;
     private Long wait;
 
     /**
@@ -194,4 +196,14 @@ public class QueueEntryEvent extends ResponseEvent
     {
         this.wait = wait;
     }
+
+	public String getConnectedLineNum () { return connectedLineNum;}
+
+	public void setConnectedLineNum (String connectedLineNum) { this.connectedLineNum = connectedLineNum;}
+
+
+	public String getConnectedLineName () { return connectedLineName;}
+
+	public void setConnectedLineName (String connectedLineName) { this.connectedLineName = connectedLineName;}
+
 }

@@ -36,6 +36,8 @@ public class StatusEvent extends ResponseEvent
     private String channel;
     private String callerIdNum;
     private String callerIdName;
+		private String connectedLineNum;
+		private String connectedLineName;
     private String accountCode;
     private Integer channelState;
     private String channelStateDesc;
@@ -400,4 +402,14 @@ public class StatusEvent extends ResponseEvent
     {
         this.variables = variables;
     }
+
+	public String getConnectedLineNum () { return connectedLineNum;}
+
+	public void setConnectedLineNum (String connectedLineNum) { this.connectedLineNum = connectedLineNum;}
+
+
+	public String getConnectedLineName () { return connectedLineName;}
+
+	public void setConnectedLineName (String connectedLineName) { this.connectedLineName = connectedLineName;}
+
 }

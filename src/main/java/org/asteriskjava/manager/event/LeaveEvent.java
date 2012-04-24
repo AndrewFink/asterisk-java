@@ -30,11 +30,18 @@ public class LeaveEvent extends QueueEvent
      */
     static final long serialVersionUID = -7450401017732634240L;
 
-    /**
+	protected Integer position;
+
+	/**
      * @param source
      */
     public LeaveEvent(Object source)
     {
         super(source);
     }
+
+
+	public Integer getPosition () { return position;}
+	public void setPosition (Integer position) { this.position = position;}
+
 }

@@ -32,6 +32,8 @@ public class JoinEvent extends QueueEvent
 
     protected String callerIdNum;
     protected String callerIdName;
+		private String connectedLineNum;
+		private String connectedLineName;
     protected Integer position;
 
     public JoinEvent(Object source)
@@ -119,4 +121,14 @@ public class JoinEvent extends QueueEvent
     {
         this.position = position;
     }
+
+	public String getConnectedLineNum () { return connectedLineNum;}
+
+	public void setConnectedLineNum (String connectedLineNum) { this.connectedLineNum = connectedLineNum;}
+
+
+	public String getConnectedLineName () { return connectedLineName;}
+
+	public void setConnectedLineName (String connectedLineName) { this.connectedLineName = connectedLineName;}
+
 }
