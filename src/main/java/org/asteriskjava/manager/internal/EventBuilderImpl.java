@@ -34,7 +34,10 @@ class EventBuilderImpl extends AbstractBuilder implements EventBuilder
     private static final Set<String> ignoredAttributes = new HashSet<String>(Arrays.asList("event"));
     private Map<String, Class<? extends ManagerEvent>> registeredEventClasses;
 
-    EventBuilderImpl()
+		private static final Class[] OBJECT_ARG = {Object.class};
+
+
+	EventBuilderImpl()
     {
         registeredEventClasses = new HashMap<String, Class<? extends ManagerEvent>>();
         registerBuiltinEventClasses();
@@ -220,7 +223,7 @@ class EventBuilderImpl extends AbstractBuilder implements EventBuilder
 
         try
         {
-            defaultConstructor = clazz.getConstructor(new Class[]{Object.class});
+            defaultConstructor = clazz.getConstructor(OBJECT_ARG);
         }
         catch (NoSuchMethodException ex)
         {
@@ -284,7 +287,7 @@ class EventBuilderImpl extends AbstractBuilder implements EventBuilder
 				final Constructor<? extends ManagerEvent> constructor;
         try
         {
-            constructor = eventClass.getConstructor(new Class[]{Object.class});
+            constructor = eventClass.getConstructor(OBJECT_ARG);
         }
         catch (NoSuchMethodException ex)
         {
